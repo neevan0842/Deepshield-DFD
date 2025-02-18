@@ -26,7 +26,7 @@ docker build -t deepshield .
 4. Run the Docker container:
 
 ```bash
-docker run --gpus all -d -p 5000:5000 -v .:/workspace --name deepshield deepshield
+docker run --gpus all -d -p 5000:5000 -p 8501:8501 -v .:/workspace --name deepshield deepshield
 ```
 
 ## Usage

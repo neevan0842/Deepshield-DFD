@@ -34,21 +34,34 @@ def upload_video(video, upload_folder):
 
     # Save the new video
     video.save(video_path)
+    keep_top_k(upload_folder)
 
+    return video_path
+
+
+def upload_video_streamlit(video, upload_folder):
+    filename = video.name
+    video_path = os.path.join(upload_folder, filename)
+
+    with open(video_path, "wb") as f:
+        f.write(video.read())
+    keep_top_k(upload_folder)
+
+    return video_path
+
+
+def keep_top_k(upload_folder, k=10):
     # Get list of files in the folder
     files = os.listdir(upload_folder)
     files_paths = [os.path.join(upload_folder, f) for f in files]
+    # Sort files by creation time (oldest first)
+    files_paths.sort(key=lambda x: -os.path.getctime(x))
 
-    # Check if there are more than 10 files
-    if len(files_paths) > 10:
-        # Sort files by creation time (oldest first)
-        files_paths.sort(key=lambda x: os.path.getctime(x))
-
+    # Check if there are more than k files
+    while len(files_paths) > k:
         # Delete the oldest file
-        oldest_file = files_paths[0]
+        oldest_file = files_paths.pop()
         os.remove(oldest_file)
-
-    return video_path
 
 
 def predict_single_video(video_path, models, frames_per_video=32, input_size=380):

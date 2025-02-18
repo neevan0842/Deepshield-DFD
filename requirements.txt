@@ -3,3 +3,4 @@ facenet-pytorch==2.3.0
 albumentations==1.0.0
 timm==0.4.12 
 Flask
+streamlit

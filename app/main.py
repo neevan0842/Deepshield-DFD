@@ -35,10 +35,18 @@ def predict():
 
     video_path = upload_video(video, UPLOAD_FOLDER)
 
-    prediction = predict_single_video(video_path=video_path, models=models)
-    result = "REAL" if prediction <= 0.5 else "FAKE"
-
-    return jsonify({"prediction": prediction, "result": result}), 200
+    try:
+        prediction = predict_single_video(video_path=video_path, models=models)
+        result = "REAL" if prediction <= 0.5 else "FAKE"
+        confidence = prediction * 100 if result == "FAKE" else (1 - prediction) * 100
+        return (
+            jsonify(
+                {"confidence": confidence, "prediction": prediction, "result": result}
+            ),
+            200,
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
