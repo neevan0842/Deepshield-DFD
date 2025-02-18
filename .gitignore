@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+app/weights/*
+app/uploads/*
+
+# But keep the directories themselves by adding an empty .gitkeep file
+!app/weights/.gitkeep
+!app/uploads/.gitkeep
+
 # C extensions
 *.so
 
