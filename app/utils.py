@@ -53,7 +53,7 @@ def upload_video_streamlit(video, upload_folder):
 def keep_top_k(upload_folder, k=10):
     # Get list of files in the folder
     files = os.listdir(upload_folder)
-    files_paths = [os.path.join(upload_folder, f) for f in files]
+    files_paths = [os.path.join(upload_folder, f) for f in files if f != ".gitkeep"]
     # Sort files by creation time (oldest first)
     files_paths.sort(key=lambda x: -os.path.getctime(x))
 
