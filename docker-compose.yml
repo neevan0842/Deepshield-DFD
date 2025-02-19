@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  deepshield:
+    image: neevan0842/deepshield-dfd:latest
+    container_name: deepshield
+    runtime: nvidia # Enable GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "5000:5000" # Map port 5000 for the Flask API
+      # - "8501:8501" # Map port 8501 for Streamlit
+    volumes:
+      - .:/workspace # Bind the current directory volume for active development

@@ -29,11 +29,11 @@ COPY . /workspace
 RUN chmod +x /workspace/download_weights.sh && /workspace/download_weights.sh
 
 # Expose necessary port (for Flask API(5000) and streamlit app(8501))
-# EXPOSE 5000
-EXPOSE 8501
+EXPOSE 5000
+# EXPOSE 8501
 
 # Serve Flask API
-# CMD ["python3", "app/main.py"] 
+CMD ["python3", "app/main.py"] 
 
 # Serve Streamlit app
-CMD ["streamlit", "run", "app/ui.py"]
+# CMD ["streamlit", "run", "app/ui.py"]
