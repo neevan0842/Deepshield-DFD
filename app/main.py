@@ -1,15 +1,17 @@
 from flask import Flask, request, jsonify
 from utils import load_models, upload_video, predict_single_video
+from logger import logger
 import os
 import torch
+import time
 
 PATH_TO_WEIGHTS = os.path.join(os.getcwd(), "app", "weights")
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "app", "uploads")
 
 if torch.cuda.is_available():
-    print("GPU Available")
+    logger.info("GPU Available")
 else:
-    print("GPU Not Available")
+    logger.info("GPU Not Available")
 
 
 models = load_models(PATH_TO_WEIGHTS)
@@ -36,12 +38,20 @@ def predict():
     video_path = upload_video(video, UPLOAD_FOLDER)
 
     try:
+        start = time.time()
         prediction = predict_single_video(video_path=video_path, models=models)
+        end = time.time()
+        logger.info(f"Prediction took {end - start:.2f} seconds")
         result = "REAL" if prediction <= 0.5 else "FAKE"
         confidence = prediction * 100 if result == "FAKE" else (1 - prediction) * 100
         return (
             jsonify(
-                {"confidence": confidence, "prediction": prediction, "result": result}
+                {
+                    "confidence": confidence,
+                    "prediction": prediction,
+                    "result": result,
+                    "time": end - start,
+                }
             ),
             200,
         )

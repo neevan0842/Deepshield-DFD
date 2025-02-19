@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import torch
+import time
 from logger import logger
 from utils import predict_single_video, load_models, upload_video_streamlit
 
@@ -48,13 +49,12 @@ if video_file is not None:
     if st.button("🔍 Analyze Video"):
         with st.spinner("Analyzing... ⏳"):
             try:
-                logger.info(
-                    f'Analyzing video: {st.session_state.video_path.split("/")[-1]}'
-                )
-
+                start = time.time()
                 prediction = predict_single_video(
                     video_path=st.session_state.video_path, models=models
                 )
+                end = time.time()
+                logger.info(f"Prediction took {end - start:.2f} seconds")
                 result = "FAKE" if prediction > 0.5 else "REAL"
                 confidence = (
                     prediction * 100 if result == "FAKE" else (1 - prediction) * 100
