@@ -54,7 +54,9 @@ if video_file is not None:
                     video_path=st.session_state.video_path, models=models
                 )
                 end = time.time()
-                logger.info(f"Prediction took {end - start:.2f} seconds")
+                logger.info(
+                    f"Prediction of {video_file.name} took {end - start:.2f} seconds"
+                )
                 result = "FAKE" if prediction > 0.5 else "REAL"
                 confidence = (
                     prediction * 100 if result == "FAKE" else (1 - prediction) * 100

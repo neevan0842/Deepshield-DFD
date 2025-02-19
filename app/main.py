@@ -41,7 +41,9 @@ def predict():
         start = time.time()
         prediction = predict_single_video(video_path=video_path, models=models)
         end = time.time()
-        logger.info(f"Prediction took {end - start:.2f} seconds")
+        logger.info(
+            f"Prediction of {video_path.split('/')[-1]} took {end - start:.2f} seconds"
+        )
         result = "REAL" if prediction <= 0.5 else "FAKE"
         confidence = prediction * 100 if result == "FAKE" else (1 - prediction) * 100
         return (
