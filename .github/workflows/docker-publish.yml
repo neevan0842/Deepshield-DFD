@@ -38,5 +38,5 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64 # Supports both x86_64 and ARM
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/deepshield-dfd:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/deepshield-dfd:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/deepshield-dfd:latest
