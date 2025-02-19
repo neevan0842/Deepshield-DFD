@@ -26,10 +26,10 @@ RUN pip install --no-cache-dir -r /workspace/requirements.txt
 COPY . /workspace
 
 # Ensure download_weights.sh is executable and run it
-# RUN chmod +x /workspace/download_weights.sh && /workspace/download_weights.sh
+RUN chmod +x /workspace/download_weights.sh && /workspace/download_weights.sh
 
-# Expose necessary port (for Flask API and streamlit app)
-EXPOSE 5000
+# Expose necessary port (for Flask API(5000) and streamlit app(8501))
+# EXPOSE 5000
 EXPOSE 8501
 
 # Serve Flask API
