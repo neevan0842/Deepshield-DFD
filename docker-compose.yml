@@ -11,7 +11,9 @@ services:
               count: all
               capabilities: [gpu]
     ports:
-      - "5000:5000" # Map port 5000 for the Flask API
-      # - "8501:8501" # Map port 8501 for Streamlit
+      # - "5000:5000" # Map port 5000 for the Flask API
+      - "8501:8501" # Map port 8501 for Streamlit
+    # command: ["python3", "app/main.py"] # Start the Flask API
+    command: ["streamlit", "run", "app/ui.py"] # Start the Streamlit app
     volumes:
       - .:/workspace # Bind the current directory volume for active development
