@@ -1,33 +1,39 @@
 # Deepshield-DFD
 
-AI-powered deepfake detection for images and videos. Uses deep learning and computer vision to identify manipulated content. Supports real-time analysis via Flask API with GPU acceleration.
+An AI-powered deepfake detection system for images and videos. Leverages deep learning and computer vision to identify manipulated content. Supports real-time analysis via a Flask API with GPU acceleration.
 
-## Setup
+## **🚀 Running the Project**
 
-1. Clone the repo:
+### **1️⃣ Clone the Repository**
 
 ```bash
 git clone https://github.com/neevan0842/Deepshield-DFD.git
-cd DeepShield-DFD
+cd Deepshield-DFD
 ```
 
-2. Download pre-trained weights:
+### **2️⃣ Start the Application**
+
+❗❗Before starting, ensure the command and ports in `docker-compose.yml` is correctly set.
 
 ```bash
-bash download_weights.sh
+docker compose up -d
+
 ```
 
-3. Build Docker image:
+### **3️⃣ Stop and Remove Containers**
+
+To stop and remove the running containers, use:
 
 ```bash
-docker build -t deepshield .
+docker compose down
 ```
 
-4. Run the Docker container:
+## **🌐 Access the Application**
 
-```bash
-docker run --gpus all -d -p 5000:5000 -p 8501:8501 -v .:/workspace --name deepshield deepshield
-```
+Once the containers are running, you can access the services at:
+
+- **Flask API**: [http://localhost:5000](http://localhost:5000)
+- **Streamlit App**: [http://localhost:8501](http://localhost:8501)
 
 ## Usage
 
