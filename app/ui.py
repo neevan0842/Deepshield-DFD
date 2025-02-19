@@ -1,41 +1,61 @@
 import streamlit as st
 import os
 import torch
+from logger import logger
 from utils import predict_single_video, load_models, upload_video_streamlit
 
-if torch.cuda.is_available():
-    print("GPU Available")
-else:
-    print("GPU Not Available")
-
+# Paths
 PATH_TO_WEIGHTS = os.path.join(os.getcwd(), "app", "weights")
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "app", "uploads")
 
-models = load_models(PATH_TO_WEIGHTS)
+
+if "gpu_checked" not in st.session_state:
+    st.session_state.gpu_checked = True
+    if torch.cuda.is_available():
+        logger.info("GPU Available")
+    else:
+        logger.info("GPU Not Available")
+
+
+@st.cache_resource
+def load_cached_models():
+    return load_models(PATH_TO_WEIGHTS)
+
+
+models = load_cached_models()
+
 
 # Streamlit UI
 st.title("DeepShield - Deepfake Detection")
 st.markdown("Upload a video to check if it's real or fake.")
 
 # Upload video
-video_file = st.file_uploader(
-    "Choose a video...", type=["mp4", "mov", "avi"]
-)  # TODO: not sure these extension will work
+video_file = st.file_uploader("Choose a video...", type=["mp4", "mov", "avi"])
 
 if video_file is not None:
-    # Save uploaded video
-    video_path = upload_video_streamlit(video_file, UPLOAD_FOLDER)
+    if (
+        "uploaded_video" not in st.session_state
+        or st.session_state.uploaded_video != video_file.name
+    ):
+        st.session_state.uploaded_video = video_file.name
+        st.session_state.video_path = upload_video_streamlit(video_file, UPLOAD_FOLDER)
+        logger.info(f"Video uploaded: {st.session_state.video_path.split('/')[-1]}")
 
     # Display video
-    st.video(video_path)
+    st.video(st.session_state.video_path)
 
     # Analyze button
     if st.button("🔍 Analyze Video"):
         with st.spinner("Analyzing... ⏳"):
             try:
-                prediction = predict_single_video(video_path=video_path, models=models)
+                logger.info(
+                    f'Analyzing video: {st.session_state.video_path.split("/")[-1]}'
+                )
+
+                prediction = predict_single_video(
+                    video_path=st.session_state.video_path, models=models
+                )
                 result = "FAKE" if prediction > 0.5 else "REAL"
-                # Confidence
                 confidence = (
                     prediction * 100 if result == "FAKE" else (1 - prediction) * 100
                 )
