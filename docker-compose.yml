@@ -15,5 +15,8 @@ services:
       - "8501:8501" # Map port 8501 for Streamlit
     # command: ["python3", "app/main.py"] # Start the Flask API
     command: ["streamlit", "run", "app/ui.py"] # Start the Streamlit app
-    volumes:
-      - .:/workspace # Bind the current directory volume for active development
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /workspace
