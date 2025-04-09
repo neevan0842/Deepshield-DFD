@@ -4,3 +4,4 @@ albumentations==1.0.0
 timm==0.4.12 
 Flask
 streamlit
+moviepy
