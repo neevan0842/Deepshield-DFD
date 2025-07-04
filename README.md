@@ -1,5 +1,7 @@
 # Deepshield-DFD
 
+![Deepshield Logo](static/deepshield.png)
+
 An AI-powered deepfake detection system for images and videos. Leverages deep learning and computer vision to identify manipulated content. Supports real-time analysis via a Flask API with GPU acceleration.
 
 ## **🚀 Running the Project**
